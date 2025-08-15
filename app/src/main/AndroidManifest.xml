@@ -2,8 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- The only permission needed is for internet access -->
+    <!-- Permissions for internet and writing to storage -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -17,12 +20,23 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-        <!-- The FileProvider is no longer needed -->
+        <!-- DELETE THE WorkManagerInitializer PROVIDER THAT WAS HERE -->
+
+        <!-- FileProvider is needed for the DownloadManager... -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:hardwareAccelerated="false"> <!-- Keep this line to prevent the black screen issue -->
+            android:hardwareAccelerated="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
